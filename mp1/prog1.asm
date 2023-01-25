@@ -123,12 +123,12 @@ HEX_PRINT
 	AND R0, R0, #0		; clear R0
 
 EXTRACT_LOOP	
+	ADD R0, R0, R0		; left shift R0	
 	ADD R4, R4, #0		; clear 
-	BRp SHIFT		;
+	BRzp SHIFT		;
 	ADD R0, R0, #1		;
 
 SHIFT	
-	ADD R0, R0, R0		; left shift R0
 	ADD R4, R4, R4		;
 	ADD R6, R6, #-1		; Decrements bit counter
 	BRp EXTRACT_LOOP 	; loops back if bits remaining
