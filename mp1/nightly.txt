@@ -61,7 +61,7 @@ Z 0001
 --- halting the LC-3 ---
 
 PC=x0494 IR=xB1AE PSR=x0400 (ZERO)
-R0=x0000 R1=x7FFF R2=x0000 R3=x001B R4=x0000 R5=x0000 R6=x0001 R7=x0490 
+R0=x0000 R1=x7FFF R2=x0000 R3=x001B R4=x0000 R5=x0000 R6=xFFF8 R7=x0490 
                    x0494 x0FF9 BRNZP TRAP_HALT
 
 Pass nightly test.
@@ -69,4 +69,4 @@ This nightly test is focusing on compilation error not functionality test.
 This nightly report only tests on the released testcases.
 There are many hidden edge testcase for the MP. Please test it yourselve.
 HIGHLY RECOMMEND YOU TO START YOUR MP EARLY!!!!!!!
-Timestamp: 2023-01-25_00:59:59
+Timestamp: 2023-01-26_00:57:25
