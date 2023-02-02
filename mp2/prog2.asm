@@ -1,4 +1,4 @@
-; partners: shubbp2, ykko2
+; partners: ykko2, mamir6
 ;
 ; This code is responsible for inputting a set of characters from the user and checking for a valid postfix 
 ; expression using a stack in LC-3. If an invalid post-fix expression is inputted, by the user, the user is notified 
