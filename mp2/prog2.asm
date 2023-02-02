@@ -50,7 +50,8 @@ SPACE		.FILL x20
 ;R3- value to print in hexadecimal
 	
 PRINT_HEX
-	ST R3, Save_R3_print
+	ST R7, Save_R7_print	; store R7 for JSR
+	ST R0, Save_R0_print	; store R0 for saving as final result
 	AND R3, R3, #0
 	ADD R3, R3, R0
 	AND R4, R4, #0
@@ -91,17 +92,17 @@ PRINT	ADD R0, R0, #9		; balances back the <=9 check performed
 	OUT			; prints the extracted digit in hex
 	ADD R5, R5, #-1		; decrements R5 after each digit is printed
 	BRp DIGIT		; Goes back to printing until 4 digits are printed
+	LD R0, Save_R0_print
 	AND R5, R5, #0
-	ADD R5, R5, R3
-	LD R3, Save_R3_print
-	AND R5, R5, #0
-	ADD R5, R5, R3		; store final result in R5
-	BR DONE
+	ADD R5, R5, R0		; store final result in R5
+	LD R7, Save_R7_print	; load R7 for JSR
+	RET
 NUMBER		.FILL x30 	; ASCII '0'
 LETTER		.FILL x41 	; ASCII 'A'
 OFFSET		.FILL x40 	; ASCII '@'
 STACK_DIFF 	.FILL x3FFF
-Save_R3_print	.BLKW #1
+Save_R0_print	.BLKW #1
+Save_R7_print	.BLKW #1
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;R0 - character input from keyboard
 ;R6 - current numerical output
@@ -435,7 +436,7 @@ MINUSCHAR	.FILL xFFD3	; negative equivalent of '-'
 DIVISCHAR	.FILL xFFD1	; negative equivalent of '/'
 MULTCHAR	.FILL xFFD6	; negative equivalent of '*'
 EXPCHAR		.FILL xFFA2	; negative equivalent of '^'
-MESSAGE		.STRINGZ " Invalid post-fix expression entered. "
+MESSAGE		.STRINGZ "Invalid Expression"
 DIV_ERROR	.STRINGZ " MATH ERROR (DIV BY 0). "
 
 
