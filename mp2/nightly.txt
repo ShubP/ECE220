@@ -35,13 +35,12 @@ Will not use stdin for LC-3 console input during script execution.
 --- halting the LC-3 ---
 
 PC=x0494 IR=xB1AE PSR=x0400 (ZERO)
-R0=x0000 R1=x7FFF R2=xFFD5 R3=x0001 R4=x0000 R5=x0001 R6=x0003 R7=x0490 
+R0=x0000 R1=x7FFF R2=xFFD5 R3=x000C R4=x0000 R5=x000C R6=x0003 R7=x0490 
                    x0494 x0FF9 BRNZP TRAP_HALT
 
-Warning!!! Answer is not store in R5. 
-Failed the nightly test!
+Pass the nightly test!
 This nightly test is focusing on compilation error not functionality test.
 This nightly report only tests on the released testcases.
 There are many hidden edge testcase for the MP. Please test it yourselve.
 HIGHLY RECOMMEND YOU TO START YOUR MP EARLY!!!!!!!
-Timestamp: 2023-02-02_00:29:58
+Timestamp: 2023-02-02_12:25:15
