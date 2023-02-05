@@ -1,0 +1,13 @@
+Compilation Results:
+********************
+
+Test Case 1:
+********************
+test1 passed
+Pass the nightly test!
+
+This nightly test is focusing on compilation error not functionality test.
+This nightly report only tests on the released testcases.
+There are many hidden edge testcase for the MP. Please test it yourselve.
+HIGHLY RECOMMEND YOU TO START YOUR MP EARLY!!!!!!!
+Timestamp: 2023-02-05_00:30:21
