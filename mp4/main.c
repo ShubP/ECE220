@@ -1,3 +1,7 @@
+/*partners: ykko2, mamir6*/
+
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "semiprime.h"
@@ -23,6 +27,6 @@ int main(){
      return -1;
    }
 
-   ret = print_semiprimes(a, b)
+   ret = print_semiprimes(a, b);
    return ret;
 }
