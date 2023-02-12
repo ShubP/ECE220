@@ -1,0 +1,18 @@
+Compilation Results: 
+********************
+Compilation successful
+
+
+Testing is_prime
+*****************
+Testing semiprimes program
+**************************
+Test 1 return correct
+Test 1 semiprimes passed
+
+Pass nightly test!!!
+This nightly test is focusing on compilation error not functionality test.
+This nightly report only tests on the released testcases.
+There are many hidden edge testcase for the MP. Please test it yourselve.
+HIGHLY RECOMMEND YOU TO START YOUR MP EARLY!!!!!!!
+Timestamp: 2023-02-12_00:33:57
