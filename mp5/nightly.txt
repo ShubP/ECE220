@@ -1,0 +1,61 @@
+Compilation Results:
+********************
+prog5.c:31:12: error: ‘solution4’ defined but not used [-Werror=unused-variable]
+ static int solution4;
+            ^~~~~~~~~
+prog5.c:30:12: error: ‘solution3’ defined but not used [-Werror=unused-variable]
+ static int solution3;
+            ^~~~~~~~~
+prog5.c:29:12: error: ‘solution2’ defined but not used [-Werror=unused-variable]
+ static int solution2;
+            ^~~~~~~~~
+prog5.c:28:12: error: ‘solution1’ defined but not used [-Werror=unused-variable]
+ static int solution1;
+            ^~~~~~~~~
+prog5.c:27:12: error: ‘guess_number’ defined but not used [-Werror=unused-variable]
+ static int guess_number;
+            ^~~~~~~~~~~~
+cc1: all warnings being treated as errors
+prog5.c:31:12: error: ‘solution4’ defined but not used [-Werror=unused-variable]
+ static int solution4;
+            ^~~~~~~~~
+prog5.c:30:12: error: ‘solution3’ defined but not used [-Werror=unused-variable]
+ static int solution3;
+            ^~~~~~~~~
+prog5.c:29:12: error: ‘solution2’ defined but not used [-Werror=unused-variable]
+ static int solution2;
+            ^~~~~~~~~
+prog5.c:28:12: error: ‘solution1’ defined but not used [-Werror=unused-variable]
+ static int solution1;
+            ^~~~~~~~~
+prog5.c:27:12: error: ‘guess_number’ defined but not used [-Werror=unused-variable]
+ static int guess_number;
+            ^~~~~~~~~~~~
+cc1: all warnings being treated as errors
+In file included from grade/mp5_grading.c:30:
+grade/stuprog5.c:31:12: error: ‘solution4’ defined but not used [-Werror=unused-variable]
+ static int solution4;
+            ^~~~~~~~~
+grade/stuprog5.c:30:12: error: ‘solution3’ defined but not used [-Werror=unused-variable]
+ static int solution3;
+            ^~~~~~~~~
+grade/stuprog5.c:29:12: error: ‘solution2’ defined but not used [-Werror=unused-variable]
+ static int solution2;
+            ^~~~~~~~~
+grade/stuprog5.c:28:12: error: ‘solution1’ defined but not used [-Werror=unused-variable]
+ static int solution1;
+            ^~~~~~~~~
+grade/stuprog5.c:27:12: error: ‘guess_number’ defined but not used [-Werror=unused-variable]
+ static int guess_number;
+            ^~~~~~~~~~~~
+cc1: all warnings being treated as errors
+
+Total points for make_guess: 
+
+Grade:
+******
+Late submission: 0
+Functionality: 0
+Comments and Style: 
+Intro paragraph: 
+Total: 
