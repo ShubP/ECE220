@@ -1,3 +1,22 @@
+/* partners: ykko2, mamir6
+
+We started by writing the set_seed function. We used the return values of sscanf to distinguish between if the inputs are only numbers.
+Then, if the return value is 1, we know that the inputs are only numbers. So, we use srand to set up the seed for the rand function using these numbers.
+Otherwise, we return 0 to set_seed and display an error message.
+Then, we wrote the start_game function. First, we call rand() to get random numbers based on the seed from srand(). 
+Then, we apply modulus 8 to get numbers from 0 to 7 only. But, we added 1 to these numbers because the input numbers should be from 1-8.
+The same is repeated to generate the other three digits of the solution for the game.
+Finally, we wrote the make_guess function. We get the four integers from guess_str and checks if it is a number.
+Then, we check if the numbers in the guess_string are between 1 to 8 inclusive. This would mean that the guess_str is valid.
+The four numbers in the guess_str are assigned to the respective pointer variables in the function. Then, we initialized the
+variable that would counter the number of perfect and mismatched digits. Additionally, we initalized two variables to represent
+a paired guess and a paired solution for each digit. First, we count the number of perfect matches and accordingly set the paired
+variables for each digit. Then, for each digit that does not have a perfect match, we check for a mismatch. If there is mismatch,
+we only set the paired variable for the solution for that digit. This helps avoiding double-counting. After all checks, we print
+the number of perfect and mismatched digits for that specific guess. Lastly, the guess number is incremented for use by main.c.
+*/
+
+
 /*			
  *
  * prog5.c - source file adapted from UIUC ECE198KL Spring 2013 Program 4
@@ -45,9 +64,13 @@ static int solution4;
  * SIDE EFFECTS: initializes pseudo-random number generation using the function srand. Prints "set_seed: invalid seed\n"
  *               if string is invalid. Prints nothing if it is valid.
  */
-int
-set_seed (const char seed_str[])
+
+
+
+int set_seed (const char seed_str[])
 {
+
+
 //    Example of how to use sscanf to read a single integer and check for anything other than the integer
 //    "int seed" will contain the number typed by the user (if any) and the string "post" will contain anything after the integer
 //    The user should enter only an integer, and nothing else, so we will check that only "seed" is read. 
@@ -62,8 +85,24 @@ set_seed (const char seed_str[])
 //    Check that the return value is 1 to ensure the user enters only an integer. 
 //    Feel free to uncomment these statements, modify them, or delete these comments as necessary. 
 //    You may need to change the return statement below
-   
-    return 0;
+
+
+
+
+int seed; //initialize the value
+char post[2]; //initialize the array post with size 2 to accomodate NULL
+int ret_val = sscanf (seed_str, "%d%1s", &seed, post); //store the number of items read and sort them into numbers(seed) and characters(post) only 
+    if (ret_val == 1) //check to see the inputs are only numbers 
+     {
+        srand(seed); //set up the set seed for rand
+        return ret_val; //return 1 for set_seed 
+    }
+    else {
+        printf("set_seed: invalid seed\n"); //invalid seed entered by the user since input is not numbers only.
+        return 0; //return 0 for set_seed
+    }
+
+    
 }
 
 
@@ -82,11 +121,19 @@ set_seed (const char seed_str[])
  * RETURN VALUE: none
  * SIDE EFFECTS: records the solution in the static solution variables for use by make_guess, set guess_number
  */
-void
-start_game (int* one, int* two, int* three, int* four)
+
+
+void start_game (int* one, int* two, int* three, int* four)
 {
-    //your code here
-    
+    *one= (rand()%8) +1; // generate solution number from 1 to 8 based on the seed 
+    *two= (rand()%8) +1; // generate solution number from 1 to 8 based on the seed 
+    *three= (rand()%8) +1; // generate solution number from 1 to 8 based on the seed 
+    *four= (rand()%8) +1; // generate solution number from 1 to 8 based on the seed 
+    guess_number=1; // initialize user's guess number 
+    solution1 = *one; // solution fixed to the specific rand() generated number
+    solution2 = *two; // solution fixed to the specific rand() generated number
+    solution3 = *three; // solution fixed to the specific rand() generated number
+    solution4 = *four; // solution fixed to the specific rand() generated number
 }
 
 /*
@@ -112,10 +159,112 @@ start_game (int* one, int* two, int* three, int* four)
  *               or an error message (invalid guess)
  *               (NOTE: the output format MUST MATCH EXACTLY, check the wiki writeup)
  */
-int
-make_guess (const char guess_str[], int* one, int* two, 
-	    int* three, int* four)
+
+
+
+int make_guess (const char guess_str[], int* one, int* two, int* three, int* four)
 {
+int w,x,y,z; //initialize the values
+char post[2]; //initialize the array post with size 2 to accomodate NULL
+int ret_val = sscanf (guess_str, "%d%d%d%d%1s", &w, &x, &y, &z, post); //store the number of items read and sort them in numbers(w,x,y,z) and characters(post) only
+    if (ret_val == 4) { //check if there are only 4 numbers read by sscanf
+        if((w >=1 && w <=8) && (x >=1 && x <=8) && (y >=1 && y <=8) && (z >=1 && z <=8)){ //check if the guess numbers are between 1 to 8
+            *one = w; //set up the first digit in the guess 
+            *two = x; //set up the second digit in the guess 
+            *three = y; //set up the third digit in the guess 
+            *four = z; //set up the fourth digit in the guess 
+            int perfect = 0; //initialized the counter for number of perfect matches
+            int mismatch = 0; //initialized the counter for number of misplaced matches
+            int pairedg1 = 0; //initialized the paired variable guess number 1
+            int paireds1 = 0; //initialized the paired variable solution number 1
+            int pairedg2 = 0; //initialized the paired variable guess number 2
+            int paireds2 = 0; //initialized the paired variable solution number 
+            int pairedg3 = 0; //initialized the paired variable guess number 3
+            int paireds3 = 0; //initialized the paired variable solution number 3
+            int pairedg4 = 0; //initialized the paired variable guess number 4
+            int paireds4 = 0; //initialized the paired variable solution number 4
+            if (*one == solution1) { // check if guess and solution number 1 match
+                perfect ++; // increment perfect match counter
+                pairedg1 = 1; // set paired guess 1 variable
+                paireds1 = 1; // set paired solution 1 variable
+            }
+            if (*two == solution2) { // check if guess and solution number 2 match
+                perfect ++; // increment perfect match counter
+                pairedg2 = 1; // set paired guess 2 variable
+                paireds2 = 1; // set paired solution 2 variable
+            }
+            if (*three == solution3) { // check if guess and solution number 3 match
+                perfect ++; // increment perfect match counter
+                pairedg3 = 1; // set paired guess 3 variable
+                paireds3 = 1; // set paired solution 3 variable
+            }
+            if (*four == solution4) { // check if guess and solution number 4 match
+                perfect ++; // increment perfect match counter
+                pairedg4 = 1; // set paired guess 4 variable
+                paireds4 = 1; // set paired solution 4 variable
+            }
+            if (*one == solution2 && pairedg1 == 0 && paireds2 == 0) { // check for misplaced matches with unpaired solution numbers
+                 mismatch ++;   // increment misplaced match counter
+                 paireds2 = 1; // set paired solution 2 variable
+            }
+            else if (*one == solution3 && pairedg1 == 0 && paireds3 == 0) {
+                 mismatch ++; // increment misplaced match counter
+                paireds3 = 1; // set paired solution 3 variable
+            }
+            else if (*one == solution4 && pairedg1 == 0 && paireds4 == 0) {
+                 mismatch ++;  // increment misplaced match counter
+                paireds4 = 1; // set paired solution 4 variable
+            }
+            if (*two == solution1 && pairedg2 == 0 && paireds1 == 0) { // check for misplaced matches with unpaired solution numbers
+                 mismatch ++; // increment misplaced match counter
+                paireds1 = 1; // set paired solution 1 variable
+            }
+            else if (*two == solution3 && pairedg2 == 0 && paireds3 == 0) {
+                 mismatch ++; // increment misplaced match counter
+                paireds3 = 1; // set paired solution 3 variable
+            }
+            else if (*two == solution4 && pairedg2 == 0 && paireds4 == 0) {
+                 mismatch ++; // increment misplaced match counter
+                paireds4 = 1; // set paired solution 4 variable
+            }
+            if (*three == solution2 && pairedg3 == 0 && paireds2 == 0) { // check for misplaced matches with unpaired solution numbers
+                 mismatch ++; // increment misplaced match counter
+                paireds2 = 1; // set paired solution 2 variable
+            }
+            else if (*three == solution1 && pairedg3 == 0 && paireds1 == 0) {
+                 mismatch ++; // increment misplaced match counter
+                paireds1 = 1; // set paired solution 1 variable
+            }
+            else if (*three == solution4 && pairedg3 == 0 && paireds4 == 0) {
+                 mismatch ++; // increment misplaced match counter
+                paireds4 = 1; // set paired solution 4 variable
+            }
+            if (*four == solution2 && pairedg4 == 0 && paireds2 == 0) { // check for misplaced matches with unpaired solution numbers
+                 mismatch ++; // increment misplaced match counter
+                paireds2 = 1; // set paired solution 2 variable
+            }
+            else if (*four == solution3 && pairedg4 == 0 && paireds3 == 0) {
+                 mismatch ++; // increment misplaced match counter
+                paireds3 = 1; // set paired solution 3 variable
+            }
+            else if (*four == solution1 && pairedg4 == 0 && paireds1 == 0) {
+                 mismatch ++; // increment misplaced match counter
+                paireds1 = 1; // set paired solution 1 variable
+            }
+            printf("With guess %d, you got %d perfect matches and %d misplaced matches.\n",guess_number, perfect, mismatch); // print perfect and misplaced matches
+            guess_number ++; // increment guess number for use in main.c
+            return 1; // return 1 for make_guess function
+        }
+        else{
+             printf("make_guess: invalid guess\n"); // print invalid guess since numbers are not between 1 and 8
+             return 0; // return 0 for make_guess function
+        }
+    }
+    else {
+        printf("make_guess: invalid guess\n"); // print invalid guess since guess input format is not valid
+        return 0; // return 0 for make_guess function
+    }
+
 //  One thing you will need to read four integers from the string guess_str, using a process
 //  similar to set_seed
 //  The statement, given char post[2]; and four integers w,x,y,z,
@@ -126,7 +275,7 @@ make_guess (const char guess_str[], int* one, int* two,
 //  You should then check if the 4 integers are between 1-8. If so, it is a valid guess
 //  Otherwise, it is invalid.  
 //  Feel free to use this sscanf statement, delete these comments, and modify the return statement as needed
-    return 1;
+
 }
 
 
