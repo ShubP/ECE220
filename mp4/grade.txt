@@ -1,0 +1,24 @@
+Compilation Results: 
+********************
+Compilation successful
+
+
+Testing is_prime
+*****************
+is_prime tests successful: +20
+
+Testing semiprimes program
+**************************
+Test 1 return correct: +7
+Test 1 semiprimes passed: +17
+Test 2 return correct: +7
+Test 2 semiprimes passed: +17
+Test 3 return correct: +6
+Test 3 semiprimes passed: +16
+
+Grade:
+******
+Late submission: 0
+Functionality: 90
+Intro paragraph: 10 
+Total: 100 
