@@ -14,9 +14,21 @@ game * make_game(int rows, int cols)
     mygame->cells = malloc(rows*cols*sizeof(cell));
 
     //YOUR CODE STARTS HERE:  Initialize all other variables in game struct
-
+    int i,j;
+    mygame -> rows = rows;
+    mygame -> cols = cols;
+    mygame -> score = 0;
+    for(i = 0; i < mygame -> rows; i++)
+    {
+      for(j = 0; j < mygame -> cols; j++)
+      {
+        (mygame->cells[i*(mygame -> cols)+j]) = -1;//loop over to initialize every element in the cell array
+      }
+    }
 
     return mygame;
+
+    // return mygame;
 }
 
 void remake_game(game ** _cur_game_ptr,int new_rows,int new_cols)
@@ -31,9 +43,21 @@ void remake_game(game ** _cur_game_ptr,int new_rows,int new_cols)
 	free((*_cur_game_ptr)->cells);
 	(*_cur_game_ptr)->cells = malloc(new_rows*new_cols*sizeof(cell));
 
-	 //YOUR CODE STARTS HERE:  Re-initialize all other variables in game struct
+	//YOUR CODE STARTS HERE:  Re-initialize all other variables in game struct
+    (*_cur_game_ptr)->rows = new_rows;//_cur_game_ptr is a double pointer. So we want to
+    (*_cur_game_ptr)->cols = new_cols;//dereference it once to be a pointer to point to the
+    (*_cur_game_ptr)->score = 0;//struct to access the members within.
 
-	return;	
+   int i,j;
+   for(i = 0; i < (*_cur_game_ptr)->rows; i++)
+   {
+     for(j = 0; j < (*_cur_game_ptr)->cols; j++)
+     {
+       (*_cur_game_ptr)->cells[i*((*_cur_game_ptr) -> cols)+j] = -1;//loop over to initialize every element in the cell array
+     }
+   }
+	return;
+	// return;	
 }
 
 void destroy_game(game * cur_game)
@@ -54,8 +78,14 @@ cell * get_cell(game * cur_game, int row, int col)
 */
 {
     //YOUR CODE STARTS HERE
-
-    return NULL;
+    if(row > cur_game->rows || col > cur_game->cols)//check if position is out of bounds
+    {
+      return NULL;
+    }
+    else{
+      return &cur_game->cells[row*(cur_game->cols) + col];//return the pointer/address to the corresponding cell
+    }
+    // return NULL;
 }
 
 int move_w(game * cur_game)
@@ -66,29 +96,226 @@ int move_w(game * cur_game)
    cell to change value, w is an invalid move and return 0. Otherwise, return 1. 
 */
 {
-    //YOUR CODE STARTS HERE
-
-    return 1;
+    int i , j;
+    int check=0;
+    for (j=0;j<cur_game ->cols; j++){
+        for(i=0;i<cur_game->rows; i++){
+            int cur_row = *get_cell(cur_game, i, j);
+            if (cur_row != -1){
+                int available = i-1;
+                for (available= i-1; available >=0;available--){
+                    if (*get_cell(cur_game, available, j)!= -1){
+                        break;
+                    }
+                }
+                available++;
+                if (*get_cell(cur_game, available, j) == -1){ // may not be needed
+                    *get_cell(cur_game, available, j) = *get_cell(cur_game, i, j);
+                    *get_cell(cur_game, i, j) = -1;
+                    check = 1;
+                }
+            }
+        }
+        int k;
+        for(k=1;k<cur_game->rows; k++){
+            int a;
+            for (a=k-1; a<k+1;a++){
+                if ((*get_cell(cur_game, a, j) == *get_cell(cur_game, a+1, j)) && (*get_cell(cur_game, a, j) != -1) && (*get_cell(cur_game, a+1, j) != -1)){
+                    *get_cell(cur_game, a, j) += *get_cell(cur_game, a+1, j);
+                    *get_cell(cur_game, a+1, j) = -1;
+                    k++;                 
+                    cur_game -> score += cur_game -> cells[(a)*(cur_game -> cols)+j];
+                    check = 1;
+                }
+            }
+        }
+        for(i=0;i<cur_game->rows; i++){
+            int cur_row = *get_cell(cur_game, i, j);
+            if (cur_row != -1){
+                int available = i-1;
+                for (available= i-1; available >=0;available--){
+                    if (*get_cell(cur_game, available, j)!= -1){
+                        break;
+                    }
+                }
+                available++;
+                if (*get_cell(cur_game, available, j) == -1){
+                    *get_cell(cur_game, available, j) = *get_cell(cur_game, i, j);
+                    *get_cell(cur_game, i, j) = -1;
+                    check = 1;
+                }
+            }
+        }        
+    }
+    return check;
 };
 
 int move_s(game * cur_game) //slide down
 {
-    //YOUR CODE STARTS HERE
-
-    return 1;
+    int i , j;
+    int check=0;
+    for (j=0;j<cur_game ->cols; j++){
+        for(i=0;i<cur_game->rows; i++){
+            int cur_row = *get_cell(cur_game, i, j);
+            if (cur_row != -1){
+                int available;
+                for (available= i+1; available < cur_game->rows;available++){
+                    if (*get_cell(cur_game, available, j)!= -1){
+                        break;
+                    }
+                }
+                available--;
+                if (*get_cell(cur_game, available, j) == -1){
+                    *get_cell(cur_game, available, j) = *get_cell(cur_game, i, j);
+                    *get_cell(cur_game, i, j) = -1;
+                    check = 1;
+                }
+            }
+        }
+        int k;
+        for(k=(cur_game->rows) -1;k>0; k--){
+            int a;
+            for (a=k-1; a<k+1;a++){
+                if ((*get_cell(cur_game, a, j) == *get_cell(cur_game, a+1, j)) && (*get_cell(cur_game, a, j) != -1) && (*get_cell(cur_game, a+1, j) != -1)){
+                    *get_cell(cur_game, a+1, j) += *get_cell(cur_game, a, j);
+                    *get_cell(cur_game, a, j) = -1;
+                    k--;                 
+                    cur_game -> score += cur_game -> cells[(a+1)*(cur_game -> cols)+j];
+                    check = 1;
+                }
+            }
+        }
+        for(i=0;i<cur_game->rows; i++){
+            int cur_row = *get_cell(cur_game, i, j);
+            if (cur_row != -1){
+                int available;
+                for (available= i+1; available < cur_game->rows;available++){
+                    if (*get_cell(cur_game, available, j)!= -1){
+                        break;
+                    }
+                }
+                available--;
+                if (*get_cell(cur_game, available, j) == -1){
+                    *get_cell(cur_game, available, j) = *get_cell(cur_game, i, j);
+                    *get_cell(cur_game, i, j) = -1;
+                    check = 1;
+                }
+            }
+        }
+    }
+    return check;
 };
 
 int move_a(game * cur_game) //slide left
 {
-    //YOUR CODE STARTS HERE
-
-    return 1;
+    int i , j;
+    int check=0;
+    for(i=0;i<cur_game->rows; i++){
+        for (j=0;j<cur_game ->cols; j++){
+            int cur_col = *get_cell(cur_game, i, j);
+            if (cur_col != -1){
+                int available = j-1;
+                for (available= j-1; available >=0;available--){
+                    if (*get_cell(cur_game,i, available)!= -1){
+                        break;
+                    }
+                }
+                available++;
+                if (*get_cell(cur_game, i,available) == -1){
+                    *get_cell(cur_game, i,available) = *get_cell(cur_game, i, j);
+                    *get_cell(cur_game, i, j) = -1;
+                    check = 1;
+                }
+            }
+        }
+        int k;
+        for(k=1;k<cur_game->cols; k++){
+            int a;
+            for (a=k-1; a<k+1;a++){
+                if ((*get_cell(cur_game, i, a) == *get_cell(cur_game, i,a+1)) && (*get_cell(cur_game, i, a) != -1) && (*get_cell(cur_game,i, a+1) != -1)){
+                    *get_cell(cur_game, i,a) += *get_cell(cur_game, i, a+1);
+                    *get_cell(cur_game, i, a+1) = -1;
+                    k++;                 
+                    cur_game -> score += cur_game -> cells[i*(cur_game -> cols)+(a)];
+                    check = 1;
+                }
+            }
+        }
+        for (j=0;j<cur_game ->cols; j++){
+            int cur_col = *get_cell(cur_game, i, j);
+            if (cur_col != -1){
+                int available = j-1;
+                for (available= j-1; available >=0;available--){
+                    if (*get_cell(cur_game,i, available)!= -1){
+                        break;
+                    }
+                }
+                available++;
+                if (*get_cell(cur_game, i,available) == -1){
+                    *get_cell(cur_game, i,available) = *get_cell(cur_game, i, j);
+                    *get_cell(cur_game, i, j) = -1;
+                    check = 1;
+                }
+            }
+        }
+    }
+    return check;
 };
 
-int move_d(game * cur_game){ //slide to the right
-    //YOUR CODE STARTS HERE
-
-    return 1;
+int move_d(game * cur_game)
+{ //slide to the right
+    int i , j;
+    int check=0;
+    for(i=0;i<cur_game->rows; i++){
+        for (j=0;j<cur_game ->cols; j++){
+            int cur_col = *get_cell(cur_game, i, j);
+            if (cur_col != -1){
+                int available;
+                for (available= j+1; available < cur_game->cols;available++){
+                    if (*get_cell(cur_game, i,available)!= -1){
+                        break;
+                    }
+                }
+                available--;
+                if (*get_cell(cur_game, i,available) == -1){
+                    *get_cell(cur_game, i,available) = *get_cell(cur_game, i, j);
+                    *get_cell(cur_game, i, j) = -1;
+                    check = 1;
+                }
+            }
+        }
+        int k;
+        for(k=(cur_game->cols) -1;k>0; k--){
+            int a;
+            for (a=k-1; a<k+1;a++){
+                if ((*get_cell(cur_game, i, a) == *get_cell(cur_game, i,a+1)) && (*get_cell(cur_game, i, a) != -1) && (*get_cell(cur_game,i, a+1) != -1)){
+                    *get_cell(cur_game, i,a+1) += *get_cell(cur_game, i, a);
+                    *get_cell(cur_game, i, a) = -1;
+                    k--;                 
+                    cur_game -> score += cur_game -> cells[i*(cur_game -> cols)+(a+1)];
+                    check = 1;
+                }
+            }
+        }
+        for (j=0;j<cur_game ->cols; j++){
+            int cur_col = *get_cell(cur_game, i, j);
+            if (cur_col != -1){
+                int available;
+                for (available= j+1; available < cur_game->cols;available++){
+                    if (*get_cell(cur_game, i,available)!= -1){
+                        break;
+                    }
+                }
+                available--;
+                if (*get_cell(cur_game, i,available) == -1){
+                    *get_cell(cur_game, i,available) = *get_cell(cur_game, i, j);
+                    *get_cell(cur_game, i, j) = -1;
+                    check = 1;
+                }
+            }
+        }
+    }
+    return check;
 };
 
 int legal_move_check(game * cur_game)
@@ -98,8 +325,36 @@ int legal_move_check(game * cur_game)
  */
 {
     //YOUR CODE STARTS HERE
+    int i,j;
+    for(i = 0; i < cur_game -> rows; i++)
+    {
+      for(j = 0; j < cur_game -> cols; j++)
+      {
+        if(cur_game -> cells[i*(cur_game -> cols) + j] == -1)
+        {
+          return 1;//iterate through every element in the cell array, if there is one element that is empty, return 1
+        }
+      }
+    }
 
-    return 1;
+    game *new_game = make_game(cur_game -> rows, cur_game -> cols);
+
+    for(i = 0; i < cur_game -> rows; i++)
+    {
+      for(j = 0; j < cur_game -> cols; j++)
+      {
+          new_game -> cells[i*(new_game -> cols) + j] = cur_game -> cells[i*(cur_game -> cols) + j];
+      }
+    }
+
+    if(move_w(new_game) == 0 && move_s(new_game) == 0 && move_a(new_game) == 0 && move_d(new_game) == 0)
+    {
+      return 0;//if we can not move in all 4 directions anymore, return 0
+    }
+    else{
+      return 1;//if any two adjacent tiles are the same, game is not over yet, return 1
+    }
+    // return 1;
 }
 
 
