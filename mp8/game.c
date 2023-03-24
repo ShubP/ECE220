@@ -1,3 +1,23 @@
+/* partners: shubbp2, ykko2
+For this MP, we first create the make_game function which creates an instance in the game structure with the rows and cols parameters entered.
+The rows and cols variables in game are set to the rows and cols provided to the function. The score is initialized to 0 since it is a new game. All
+cells in the game instance are initialized as empty cells(-1). The remake_game function is written in the same way, but deferenced once because of 
+the double struct. We also write the get_cell function which is used in other sections of the code. The get_cell function checks the bounds of the given row and col
+and returns NULL if the invalid coordinates are entered. Otherwise it points to the address calculated using the row-major formula.
+
+For the sliding functions, we use a algorithm of first sliding all exisiting cells in the given direction. Then, we check for any possible combining tiles and combine
+them. A combination creates empty cells in the algorithm which has to be adjusted. Hence, we slide the cells again in the given direction which gives us the desired result.
+For example, for the initial sliding for move_w, we find the first available empty cell above the cell and accordingly change it. Since a change has occured, the move 
+is set as valid. Then for the combining cells, we go through every possible row combination from the top. If a combination needs to be made, the cell values are added 
+and stored in the upper cell of the combination. The lower cell is changed to an empty cell. We then skip the next combination in order to prevent combining of the same cell
+again. Since empty cells are created, we adjust it again using the same initial method of finding available cells. This algorithm is applied in every direction, but the loop moves 
+in the direction for rows and columns accordingly.
+
+Lastly, for legal_move_check we first check if there are any empty cells in the game since that indicates a possible move. If not, we first create a new game instance and then copy
+the cell values from the current game to the new instance. We then apply the four move functions on the new instance and check if any of them return a valid move. Accordingly, 
+the function returns if a valid move exists while preventing any changes to the current game.
+*/
+
 #include "game.h"
 
 
@@ -14,15 +34,15 @@ game * make_game(int rows, int cols)
     mygame->cells = malloc(rows*cols*sizeof(cell));
 
     //YOUR CODE STARTS HERE:  Initialize all other variables in game struct
-    int i,j;
-    mygame -> rows = rows;
-    mygame -> cols = cols;
-    mygame -> score = 0;
-    for(i = 0; i < mygame -> rows; i++)
+    int i,j; //Initialize variables
+    mygame -> rows = rows; // set row in my game 
+    mygame -> cols = cols; // set column in my game 
+    mygame -> score = 0; // set score in my game 
+    for(i = 0; i < mygame -> rows; i++) // iterate through every row 
     {
-      for(j = 0; j < mygame -> cols; j++)
+      for(j = 0; j < mygame -> cols; j++) // iterate through every column  
       {
-        (mygame->cells[i*(mygame -> cols)+j]) = -1;//loop over to initialize every element in the cell array
+        (mygame->cells[i*(mygame -> cols)+j]) = -1;//initialize every element in the mygame to -1
       }
     }
 
@@ -44,20 +64,18 @@ void remake_game(game ** _cur_game_ptr,int new_rows,int new_cols)
 	(*_cur_game_ptr)->cells = malloc(new_rows*new_cols*sizeof(cell));
 
 	//YOUR CODE STARTS HERE:  Re-initialize all other variables in game struct
-    (*_cur_game_ptr)->rows = new_rows;//_cur_game_ptr is a double pointer. So we want to
-    (*_cur_game_ptr)->cols = new_cols;//dereference it once to be a pointer to point to the
-    (*_cur_game_ptr)->score = 0;//struct to access the members within.
+    (*_cur_game_ptr)->rows = new_rows; // set row in _cur_game_ptr
+    (*_cur_game_ptr)->cols = new_cols; // set column in _cur_game_ptr
+    (*_cur_game_ptr)->score = 0; // set score in _cur_game_ptr
 
    int i,j;
-   for(i = 0; i < (*_cur_game_ptr)->rows; i++)
+   for(i = 0; i < (*_cur_game_ptr)->rows; i++) // iterate through every row in cur_game_ptr
    {
-     for(j = 0; j < (*_cur_game_ptr)->cols; j++)
+     for(j = 0; j < (*_cur_game_ptr)->cols; j++) // iterate through every column in cur_game_ptr
      {
-       (*_cur_game_ptr)->cells[i*((*_cur_game_ptr) -> cols)+j] = -1;//loop over to initialize every element in the cell array
+       (*_cur_game_ptr)->cells[i*((*_cur_game_ptr) -> cols)+j] = -1;//initialize every element in the cur_game_ptr to -1
      }
    }
-	return;
-	// return;	
 }
 
 void destroy_game(game * cur_game)
@@ -78,14 +96,14 @@ cell * get_cell(game * cur_game, int row, int col)
 */
 {
     //YOUR CODE STARTS HERE
-    if(row > cur_game->rows || col > cur_game->cols)//check if position is out of bounds
+    if(row < 0 || col < 0 || row > cur_game->rows || col > cur_game->cols)//check if coordinate exist 
     {
-      return NULL;
+      return NULL; //return null
     }
     else{
-      return &cur_game->cells[row*(cur_game->cols) + col];//return the pointer/address to the corresponding cell
+      return &cur_game->cells[row*(cur_game->cols) + col];//return the pointer to the corresponding cells 
     }
-    // return NULL;
+   
 }
 
 int move_w(game * cur_game)
@@ -96,40 +114,40 @@ int move_w(game * cur_game)
    cell to change value, w is an invalid move and return 0. Otherwise, return 1. 
 */
 {
-    int i , j;
-    int check=0;
-    for (j=0;j<cur_game ->cols; j++){
-        for(i=0;i<cur_game->rows; i++){
-            int cur_row = *get_cell(cur_game, i, j);
-            if (cur_row != -1){
-                int available = i-1;
-                for (available= i-1; available >=0;available--){
-                    if (*get_cell(cur_game, available, j)!= -1){
-                        break;
+    int i , j; //Initialize variables
+    int check=0; //Initialize variable
+    for (j=0;j<cur_game ->cols; j++){ //check through every columns
+        for(i=0;i<cur_game->rows; i++){ //check through every rows
+            int cur_row = *get_cell(cur_game, i, j); // calculate the cell value at the current i,j
+            if (cur_row != -1){ //check if the cell is empty
+                int available = i-1; // initialize available
+                for (available= i-1; available >=0;available--){ // loop for finding the first available empty cell above the current cell
+                    if (*get_cell(cur_game, available, j)!= -1){ // break the loop if a filled cell is found above
+                        break; // break
                     }
                 }
-                available++;
-                if (*get_cell(cur_game, available, j) == -1){ // may not be needed
-                    *get_cell(cur_game, available, j) = *get_cell(cur_game, i, j);
-                    *get_cell(cur_game, i, j) = -1;
-                    check = 1;
+                available++; //adjust available for the loop extra count
+                if (*get_cell(cur_game, available, j) == -1){ // check if the target cell is empty
+                    *get_cell(cur_game, available, j) = *get_cell(cur_game, i, j); // set the target cell as the current cell
+                    *get_cell(cur_game, i, j) = -1; // set the current cell as empty
+                    check = 1; // set as a valid move
                 }
             }
         }
-        int k;
-        for(k=1;k<cur_game->rows; k++){
-            int a;
-            for (a=k-1; a<k+1;a++){
-                if ((*get_cell(cur_game, a, j) == *get_cell(cur_game, a+1, j)) && (*get_cell(cur_game, a, j) != -1) && (*get_cell(cur_game, a+1, j) != -1)){
-                    *get_cell(cur_game, a, j) += *get_cell(cur_game, a+1, j);
-                    *get_cell(cur_game, a+1, j) = -1;
-                    k++;                 
-                    cur_game -> score += cur_game -> cells[(a)*(cur_game -> cols)+j];
-                    check = 1;
+        int k; // initialize variable
+        for(k=1;k<cur_game->rows; k++){ // go through every combination of cells
+            int a; // initialize variable
+            for (a=k-1; a<k+1;a++){ // go through the cell in the given combination
+                if ((*get_cell(cur_game, a, j) == *get_cell(cur_game, a+1, j)) && (*get_cell(cur_game, a, j) != -1) && (*get_cell(cur_game, a+1, j) != -1)){ // check if combination has equal and non-empty cells
+                    *get_cell(cur_game, a, j) += *get_cell(cur_game, a+1, j); // combine the value of cells and store in the upper cell
+                    *get_cell(cur_game, a+1, j) = -1; // set the lower cell as empty
+                    k++; // increment k to skip to next combination                
+                    cur_game -> score += cur_game -> cells[(a)*(cur_game -> cols)+j]; // calculate the score
+                    check = 1; // set as a valid move
                 }
             }
         }
-        for(i=0;i<cur_game->rows; i++){
+        for(i=0;i<cur_game->rows; i++){ // adjust all cells upward in case a combination has been made
             int cur_row = *get_cell(cur_game, i, j);
             if (cur_row != -1){
                 int available = i-1;
@@ -147,45 +165,46 @@ int move_w(game * cur_game)
             }
         }        
     }
-    return check;
+    return check; // return if it's a valid move
 };
 
-int move_s(game * cur_game) //slide down
+int move_s(game * cur_game) //
 {
-    int i , j;
-    int check=0;
-    for (j=0;j<cur_game ->cols; j++){
-        for(i=0;i<cur_game->rows; i++){
-            int cur_row = *get_cell(cur_game, i, j);
-            if (cur_row != -1){
-                int available;
-                for (available= i+1; available < cur_game->rows;available++){
-                    if (*get_cell(cur_game, available, j)!= -1){
-                        break;
+    int i , j; // initialize variable
+    int check=0; // initialize variable
+    for (j=0;j<cur_game ->cols; j++){ // check through every columns
+        for(i=cur_game->rows -1;i>=0; i--){ // check through every rows
+            int cur_row = *get_cell(cur_game, i, j); //calculate the cell value at the current i,j
+            if (cur_row != -1){// check if cell is empty
+                int available; // initialize available
+                for (available= i+1; available < cur_game->rows;available++){ // loop for finding the first available empty cell below the current cell
+                    if (*get_cell(cur_game, available, j)!= -1){ // break the loop if a filled cell is found below
+                        break; // break
                     }
                 }
-                available--;
-                if (*get_cell(cur_game, available, j) == -1){
-                    *get_cell(cur_game, available, j) = *get_cell(cur_game, i, j);
-                    *get_cell(cur_game, i, j) = -1;
-                    check = 1;
+                available--; // adjust available for the loop reduced count
+                if (*get_cell(cur_game, available, j) == -1){ // check if the target cell is empty
+                    *get_cell(cur_game, available, j) = *get_cell(cur_game, i, j); // set the target cell as the current cell
+                    *get_cell(cur_game, i, j) = -1; //set the current cell as empty
+                    check = 1; // set as a valid move
                 }
             }
         }
-        int k;
-        for(k=(cur_game->rows) -1;k>0; k--){
-            int a;
-            for (a=k-1; a<k+1;a++){
-                if ((*get_cell(cur_game, a, j) == *get_cell(cur_game, a+1, j)) && (*get_cell(cur_game, a, j) != -1) && (*get_cell(cur_game, a+1, j) != -1)){
-                    *get_cell(cur_game, a+1, j) += *get_cell(cur_game, a, j);
-                    *get_cell(cur_game, a, j) = -1;
-                    k--;                 
-                    cur_game -> score += cur_game -> cells[(a+1)*(cur_game -> cols)+j];
-                    check = 1;
+        int k; // initialize variable
+        for(k=(cur_game->rows)-1;k>0; k--){ // go through every combination of cells
+            int a; // initialize variable
+            for (a=k-1; a<k;a++){ // go through the cell in the given combination
+                if ((*get_cell(cur_game, a, j) == *get_cell(cur_game, a+1, j)) && (*get_cell(cur_game, a, j) != -1) && (*get_cell(cur_game, a+1, j) != -1)){  // check if combiation has equal and non-empty cells
+                    *get_cell(cur_game, a+1, j) += *get_cell(cur_game, a, j); // combine the value of cells and store in the lower cell
+                    *get_cell(cur_game, a, j) = -1; // set the upper cell as empty
+                    
+                    k--; // decrement k to skip to next combination             
+                    cur_game -> score += cur_game -> cells[(a+1)*(cur_game -> cols)+j]; // calculate the score
+                    check = 1; // set as a valid move
                 }
             }
         }
-        for(i=0;i<cur_game->rows; i++){
+        for(i=cur_game->rows -1;i>=0; i--){// adjust all cells below in case a combination has been made
             int cur_row = *get_cell(cur_game, i, j);
             if (cur_row != -1){
                 int available;
@@ -203,45 +222,45 @@ int move_s(game * cur_game) //slide down
             }
         }
     }
-    return check;
+    return check; // return if it's a valid move
 };
 
-int move_a(game * cur_game) //slide left
+int move_a(game * cur_game) 
 {
-    int i , j;
-    int check=0;
-    for(i=0;i<cur_game->rows; i++){
-        for (j=0;j<cur_game ->cols; j++){
-            int cur_col = *get_cell(cur_game, i, j);
-            if (cur_col != -1){
-                int available = j-1;
-                for (available= j-1; available >=0;available--){
-                    if (*get_cell(cur_game,i, available)!= -1){
-                        break;
+    int i , j; // initialize variable
+    int check=0; //initialize variable
+    for(i=0;i<cur_game->rows; i++){ // check through every rows
+        for (j=0;j<cur_game ->cols; j++){ // check through every columns
+            int cur_col = *get_cell(cur_game, i, j); //calculate the cell value at the current i,j
+            if (cur_col != -1){//check if the cell is empty
+                int available = j-1; // initialize available
+                for (available= j-1; available >=0;available--){ //loop for finding the first available empty cell to the left of the current cell
+                    if (*get_cell(cur_game,i, available)!= -1){ //break the loop if a filled cell is found to the left
+                        break; // break
                     }
                 }
-                available++;
-                if (*get_cell(cur_game, i,available) == -1){
-                    *get_cell(cur_game, i,available) = *get_cell(cur_game, i, j);
-                    *get_cell(cur_game, i, j) = -1;
-                    check = 1;
+                available++; //adjust available for the loop extra count
+                if (*get_cell(cur_game, i,available) == -1){ //check if the target cell is empty
+                    *get_cell(cur_game, i,available) = *get_cell(cur_game, i, j); // set the target cell as the current cell
+                    *get_cell(cur_game, i, j) = -1; // set the current cell as empty
+                    check = 1; // set as a valid move
                 }
             }
         }
-        int k;
-        for(k=1;k<cur_game->cols; k++){
-            int a;
-            for (a=k-1; a<k+1;a++){
-                if ((*get_cell(cur_game, i, a) == *get_cell(cur_game, i,a+1)) && (*get_cell(cur_game, i, a) != -1) && (*get_cell(cur_game,i, a+1) != -1)){
-                    *get_cell(cur_game, i,a) += *get_cell(cur_game, i, a+1);
-                    *get_cell(cur_game, i, a+1) = -1;
-                    k++;                 
-                    cur_game -> score += cur_game -> cells[i*(cur_game -> cols)+(a)];
-                    check = 1;
+        int k; //initialize variable
+        for(k=1;k<cur_game->cols; k++){ // go through every combination of cells
+            int a; // initialize variable
+            for (a=k-1; a<k+1;a++){ // go through the cell in the given combination
+                if ((*get_cell(cur_game, i, a) == *get_cell(cur_game, i,a+1)) && (*get_cell(cur_game, i, a) != -1) && (*get_cell(cur_game,i, a+1) != -1)){//check if the combination has equal and non-empty cells
+                    *get_cell(cur_game, i,a) += *get_cell(cur_game, i, a+1); // combine the values of cells and store in the left cell
+                    *get_cell(cur_game, i, a+1) = -1; // set the right cell as empty
+                    k++;// increment k to skip to next combination                 
+                    cur_game -> score += cur_game -> cells[i*(cur_game -> cols)+(a)]; //calculate the score
+                    check = 1; //set as a valid move
                 }
             }
         }
-        for (j=0;j<cur_game ->cols; j++){
+        for (j=0;j<cur_game ->cols; j++){//adjust all cells leftward in case a combination has been made
             int cur_col = *get_cell(cur_game, i, j);
             if (cur_col != -1){
                 int available = j-1;
@@ -259,45 +278,45 @@ int move_a(game * cur_game) //slide left
             }
         }
     }
-    return check;
+    return check; //return if it's a valid move
 };
 
 int move_d(game * cur_game)
 { //slide to the right
-    int i , j;
-    int check=0;
-    for(i=0;i<cur_game->rows; i++){
-        for (j=0;j<cur_game ->cols; j++){
-            int cur_col = *get_cell(cur_game, i, j);
-            if (cur_col != -1){
-                int available;
-                for (available= j+1; available < cur_game->cols;available++){
-                    if (*get_cell(cur_game, i,available)!= -1){
-                        break;
+    int i , j; //initialize variable
+    int check=0;// initialize variable
+    for(i=0;i<cur_game->rows; i++){ // check through every rows
+        for (j=cur_game ->cols -1;j>=0; j--){ //check through every columns
+            int cur_col = *get_cell(cur_game, i, j); //calculate the cell value at the current i,j
+            if (cur_col != -1){//check if the cell is empty
+                int available;//initialize variable
+                for (available= j+1; available < cur_game->cols;available++){// loop for finding the first available empty cells right to the current cell
+                    if (*get_cell(cur_game, i,available)!= -1){ //break the loop if a filled cell is found to the right
+                        break;//break
                     }
                 }
-                available--;
-                if (*get_cell(cur_game, i,available) == -1){
-                    *get_cell(cur_game, i,available) = *get_cell(cur_game, i, j);
-                    *get_cell(cur_game, i, j) = -1;
-                    check = 1;
+                available--; //adjust available for the loop reduced count
+                if (*get_cell(cur_game, i,available) == -1){ //check if the target cell is empty
+                    *get_cell(cur_game, i,available) = *get_cell(cur_game, i, j);// set the target cell as the current cell
+                    *get_cell(cur_game, i, j) = -1; //set the current cell is empty
+                    check = 1; // set as a valid move
                 }
             }
         }
-        int k;
-        for(k=(cur_game->cols) -1;k>0; k--){
-            int a;
-            for (a=k-1; a<k+1;a++){
-                if ((*get_cell(cur_game, i, a) == *get_cell(cur_game, i,a+1)) && (*get_cell(cur_game, i, a) != -1) && (*get_cell(cur_game,i, a+1) != -1)){
-                    *get_cell(cur_game, i,a+1) += *get_cell(cur_game, i, a);
-                    *get_cell(cur_game, i, a) = -1;
-                    k--;                 
-                    cur_game -> score += cur_game -> cells[i*(cur_game -> cols)+(a+1)];
-                    check = 1;
+        int k; // initialize variable
+        for(k=(cur_game->cols) -1;k>0; k--){ // go through every combination of cells
+            int a; // initialize variable
+            for (a=k-1; a<k;a++){ // go through the cell in the given combination
+                if ((*get_cell(cur_game, i, a) == *get_cell(cur_game, i,a+1)) && (*get_cell(cur_game, i, a) != -1) && (*get_cell(cur_game,i, a+1) != -1)){ //check if combination has equal and non-empty cells
+                    *get_cell(cur_game, i,a+1) += *get_cell(cur_game, i, a);//combine the value of cells and store in the right cell
+                    *get_cell(cur_game, i, a) = -1;//set the left cell as empty
+                    k--; //decrement k to skip to next combination                
+                    cur_game -> score += cur_game -> cells[i*(cur_game -> cols)+(a+1)]; //calculate the score
+                    check = 1; // set as a valid move
                 }
             }
         }
-        for (j=0;j<cur_game ->cols; j++){
+        for (j=cur_game ->cols -1;j>=0; j--){ // adjust all cells upward in case a combination has been made
             int cur_col = *get_cell(cur_game, i, j);
             if (cur_col != -1){
                 int available;
@@ -315,7 +334,7 @@ int move_d(game * cur_game)
             }
         }
     }
-    return check;
+    return check; // return if it's a valid move
 };
 
 int legal_move_check(game * cur_game)
@@ -325,36 +344,35 @@ int legal_move_check(game * cur_game)
  */
 {
     //YOUR CODE STARTS HERE
-    int i,j;
-    for(i = 0; i < cur_game -> rows; i++)
+    int i,j; //initialize variable
+    for(i = 0; i < cur_game -> rows; i++) // go through every row
     {
-      for(j = 0; j < cur_game -> cols; j++)
+      for(j = 0; j < cur_game -> cols; j++) // go through every column
       {
-        if(cur_game -> cells[i*(cur_game -> cols) + j] == -1)
+        if(*get_cell(cur_game, i,j) == -1) // check if there is any empty cell
         {
-          return 1;//iterate through every element in the cell array, if there is one element that is empty, return 1
+          return 1;//return 1 since empty cell indicates possible move
         }
       }
     }
 
-    game *new_game = make_game(cur_game -> rows, cur_game -> cols);
-
-    for(i = 0; i < cur_game -> rows; i++)
+    // checking for legal moves incase the board is fully filled
+    game *new = make_game(cur_game -> rows, cur_game -> cols); // make a new game structure
+    for(i = 0; i < cur_game -> rows; i++) // go through every row
     {
-      for(j = 0; j < cur_game -> cols; j++)
+      for(j = 0; j < cur_game -> cols; j++) // go through every column
       {
-          new_game -> cells[i*(new_game -> cols) + j] = cur_game -> cells[i*(cur_game -> cols) + j];
+          *get_cell(new, i,j) = *get_cell(cur_game, i,j); // copy all the existing cells into new
       }
     }
 
-    if(move_w(new_game) == 0 && move_s(new_game) == 0 && move_a(new_game) == 0 && move_d(new_game) == 0)
-    {
-      return 0;//if we can not move in all 4 directions anymore, return 0
+    if((move_w(new) == 0) && (move_s(new) == 0) && (move_a(new) == 0) && (move_d(new) == 0)){ //check if any individual move on new_game is valid
+      return 0;//return 0 if any is invalid
     }
     else{
-      return 1;//if any two adjacent tiles are the same, game is not over yet, return 1
+      return 1;//return 1 if any is valid
     }
-    // return 1;
+    
 }
 
 
