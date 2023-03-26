@@ -1,0 +1,60 @@
+Compilation Results:
+********************
+maze.c: In function ‘createMaze’:
+maze.c:13:28: warning: unused parameter ‘fileName’ [-Wunused-parameter]
+ maze_t * createMaze(char * fileName)
+                     ~~~~~~~^~~~~~~~
+maze.c: In function ‘destroyMaze’:
+maze.c:26:27: warning: unused parameter ‘maze’ [-Wunused-parameter]
+ void destroyMaze(maze_t * maze)
+                  ~~~~~~~~~^~~~
+maze.c: In function ‘printMaze’:
+maze.c:40:25: warning: unused parameter ‘maze’ [-Wunused-parameter]
+ void printMaze(maze_t * maze)
+                ~~~~~~~~~^~~~
+maze.c: In function ‘solveMazeDFS’:
+maze.c:54:27: warning: unused parameter ‘maze’ [-Wunused-parameter]
+ int solveMazeDFS(maze_t * maze, int col, int row)
+                  ~~~~~~~~~^~~~
+maze.c:54:37: warning: unused parameter ‘col’ [-Wunused-parameter]
+ int solveMazeDFS(maze_t * maze, int col, int row)
+                                 ~~~~^~~
+maze.c:54:46: warning: unused parameter ‘row’ [-Wunused-parameter]
+ int solveMazeDFS(maze_t * maze, int col, int row)
+                                          ~~~~^~~
+
+Testing createMaze (20 pts)
+
+Testing destroyMaze (10 pts)
+destroyMaze score: 10 points if no memory leaks/errors otherwise 0
+==2604053== Memcheck, a memory error detector
+==2604053== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==2604053== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==2604053== Command: ./grader 1
+==2604053== 
+==2604053== 
+==2604053== HEAP SUMMARY:
+==2604053==     in use at exit: 3,041 bytes in 53 blocks
+==2604053==   total heap usage: 55 allocs, 2 frees, 11,721 bytes allocated
+==2604053== 
+==2604053== LEAK SUMMARY:
+==2604053==    definitely lost: 32 bytes in 1 blocks
+==2604053==    indirectly lost: 3,009 bytes in 52 blocks
+==2604053==      possibly lost: 0 bytes in 0 blocks
+==2604053==    still reachable: 0 bytes in 0 blocks
+==2604053==         suppressed: 0 bytes in 0 blocks
+==2604053== Rerun with --leak-check=full to see details of leaked memory
+==2604053== 
+==2604053== For lists of detected and suppressed errors, rerun with: -s
+==2604053== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+Testing printMaze 
+PrintMazeScore: 0
+
+0
+Failed the nightly test.
+This nightly test is focusing on compilation error not functionality test.
+This nightly report only tests on the released testcases.
+There are many hidden edge testcase for the MP. Please test it yourselve.
+HIGHLY RECOMMEND YOU TO START YOUR MP EARLY!!!!!!!
+Timestamp: 2023-03-26_00:48:52
