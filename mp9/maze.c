@@ -13,7 +13,44 @@
 maze_t * createMaze(char * fileName)
 {
     // Your code here. Make sure to replace following line with your own code.
-    return NULL;
+    maze_t * mymaze = (maze_t*) malloc(sizeof(maze_t)); 
+    FILE *file = fopen (fileName, "r");
+    int rows, cols;
+    fscanf (file, "%d %d\n" , &cols, &rows );
+    mymaze -> width = cols;
+    mymaze -> height= rows; 
+    mymaze -> cells = (char **)calloc(rows, sizeof(char *));
+    int i;
+    for (i=0; i<rows; i++)
+    {
+        mymaze -> cells[i] = (char *)calloc (cols, sizeof(char));
+    }
+    int k, l;
+    for ( k=0; k< rows; k++)
+    {
+        for (l=0; l< cols+1; l++)
+        {
+            char cell = fgetc(file);
+            if (cell == 'S')
+            {
+                mymaze -> startRow = k;
+                mymaze -> startColumn = l;
+
+            }
+            else if (cell == 'E')
+            {
+                mymaze -> endRow = k;
+                mymaze -> endColumn = l;
+                
+            }
+            if (cell != '\n')
+            {
+                mymaze -> cells[k][l] = cell;
+            }
+        }
+    }
+    fclose(file);
+    return mymaze;
 }
 
 /*
@@ -26,6 +63,13 @@ maze_t * createMaze(char * fileName)
 void destroyMaze(maze_t * maze)
 {
     // Your code here.
+    int i;
+    for(i=0; i<maze -> height; i++ ){
+        free(maze -> cells[i]);
+    }
+    free(maze->cells);
+    free(maze);
+    return;
 }
 
 /*
@@ -40,10 +84,17 @@ void destroyMaze(maze_t * maze)
 void printMaze(maze_t * maze)
 {
     // Your code here.
+    int i,j;
+    for(i=0; i<maze -> width; i++){
+        for(j=0; j<maze -> height; j++){
+            printf("%c",maze -> cells[i][j]);
+        }
+        printf("\n");
+    }
+    return;
 }
-
 /*
- * solveMazeManhattanDFS -- recursively solves the maze using depth first search,
+ * solveMazeDFS -- recursively solves the maze using depth first search,
  * INPUTS:               maze -- pointer to maze structure with all necessary maze information
  *                       col -- the column of the cell currently beinging visited within the maze
  *                       row -- the row of the cell currently being visited within the maze
@@ -54,5 +105,32 @@ void printMaze(maze_t * maze)
 int solveMazeDFS(maze_t * maze, int col, int row)
 {
     // Your code here. Make sure to replace following line with your own code.
+    if ((col <0) || (row <0) || (col > maze -> width) || (row > maze ->height)){
+        return 0;
+    }
+    if (maze->cells[row][col] == 'E'){
+        return 1;
+    }
+    if (maze->cells[row][col] != ' ' && maze->cells[row][col] != 'S'){
+        return 0;
+    }
+    if(maze->cells[row][col] != 'S'){
+        maze->cells[row][col] = '*';
+    }
+    if (solveMazeDFS(maze, col-1,row) == 1){
+        return 1;
+    }
+    if (solveMazeDFS(maze, col+1,row) == 1){
+        return 1;
+    }
+    if (solveMazeDFS(maze, col,row-1) == 1){
+        return 1;
+    }
+    if (solveMazeDFS(maze, col,row+1) == 1){
+        return 1;
+    }
+    if(maze->cells[row][col] != 'S'){
+       maze->cells[row][col] = '~'; 
+    }
     return 0;
 }
