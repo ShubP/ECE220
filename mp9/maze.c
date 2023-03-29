@@ -114,11 +114,8 @@ int solveMazeDFS(maze_t * maze, int col, int row)
     if (maze->cells[row][col] != ' ' && maze->cells[row][col] != 'S'){
         return 0;
     }
-    if(maze->cells[row][col] != 'S'){
+    if(maze->cells[row][col] == ' '){
         maze->cells[row][col] = '*';
-    }
-    if (solveMazeDFS(maze, col-1,row) == 1){
-        return 1;
     }
     if (solveMazeDFS(maze, col+1,row) == 1){
         return 1;
@@ -127,6 +124,9 @@ int solveMazeDFS(maze_t * maze, int col, int row)
         return 1;
     }
     if (solveMazeDFS(maze, col,row+1) == 1){
+        return 1;
+    }
+    if (solveMazeDFS(maze, col-1,row) == 1){
         return 1;
     }
     if(maze->cells[row][col] != 'S'){
