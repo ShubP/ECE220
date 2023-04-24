@@ -1,0 +1,32 @@
+Compilation Results:
+********************
+In file included from main.cpp:3:
+shape.hpp: In function ‘double MaxVolume(std::__cxx11::list<Shape*>)’:
+shape.hpp:298:25: error: variable ‘it’ set but not used [-Werror=unused-but-set-variable]
+  list<Shape*>::iterator it = shapes.begin();
+                         ^~
+cc1plus: all warnings being treated as errors
+shape.hpp: In function ‘double MaxVolume(std::__cxx11::list<Shape*>)’:
+shape.hpp:298:25: error: variable ‘it’ set but not used [-Werror=unused-but-set-variable]
+  list<Shape*>::iterator it = shapes.begin();
+                         ^~
+cc1plus: all warnings being treated as errors
+make: *** [Makefile:2: student] Error 1
+ 
+
+ ------------------- Begin Verifying MP11 ---------------------
+getName() 6/6
+Rectangle: 16/16
+Circle: 16/16
+Sphere: 16/16
+RectPrism: 16/16
+MaxArea(): 10/10
+MaxVolume(): 10/10
+CreateShape() 10/10
+Your total Score for MP11: 100/100
+-------------------- End Verifying MP11 ----------------------
+
+
+
+Late submission: 0
+Total: 100 
