@@ -1,57 +1,57 @@
 Compilation Results:
 ********************
-==2181462== Memcheck, a memory error detector
-==2181462== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==2181462== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
-==2181462== Command: ./mp12_test
-==2181462== 
+==3046156== Memcheck, a memory error detector
+==3046156== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==3046156== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==3046156== Command: ./mp12_test
+==3046156== 
  
 
  ------------------- Begin Verifying MP12 ---------------------
-==2181462== Conditional jump or move depends on uninitialised value(s)
-==2181462==    at 0x405E61: GNode<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::operator==(Node<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&) const (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
-==2181462==    by 0x428548: test_node_constructor() (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
-==2181462==    by 0x42B95A: main (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
-==2181462== 
-==2181462== Conditional jump or move depends on uninitialised value(s)
-==2181462==    at 0x405F77: GNode<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::operator==(Node<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&) const (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
-==2181462==    by 0x428548: test_node_constructor() (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
-==2181462==    by 0x42B95A: main (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
-==2181462== 
+==3046156== Conditional jump or move depends on uninitialised value(s)
+==3046156==    at 0x405E61: GNode<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::operator==(Node<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&) const (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
+==3046156==    by 0x428548: test_node_constructor() (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
+==3046156==    by 0x42B95A: main (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
+==3046156== 
+==3046156== Conditional jump or move depends on uninitialised value(s)
+==3046156==    at 0x405F77: GNode<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::operator==(Node<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&) const (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
+==3046156==    by 0x428548: test_node_constructor() (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
+==3046156==    by 0x42B95A: main (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
+==3046156== 
 terminate called after throwing an instance of 'std::logic_error'
   what():  basic_string::_M_construct null not valid
-==2181462== 
-==2181462== Process terminating with default action of signal 6 (SIGABRT)
-==2181462==    at 0x57C4AFF: raise (in /usr/lib64/libc-2.28.so)
-==2181462==    by 0x5797EA4: abort (in /usr/lib64/libc-2.28.so)
-==2181462==    by 0x4ED709A: ??? (in /usr/lib64/libstdc++.so.6.0.25)
-==2181462==    by 0x4EDD53B: ??? (in /usr/lib64/libstdc++.so.6.0.25)
-==2181462==    by 0x4EDD596: std::terminate() (in /usr/lib64/libstdc++.so.6.0.25)
-==2181462==    by 0x4EDD7F7: __cxa_throw (in /usr/lib64/libstdc++.so.6.0.25)
-==2181462==    by 0x4ED8FB2: ??? (in /usr/lib64/libstdc++.so.6.0.25)
-==2181462==    by 0x4F76F9C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) (in /usr/lib64/libstdc++.so.6.0.25)
-==2181462==    by 0x427815: Node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::getKey() (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
-==2181462==    by 0x406251: GNode<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::operator==(Node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&) const (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
-==2181462==    by 0x428569: test_node_constructor() (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
-==2181462==    by 0x42B95A: main (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
-==2181462== 
-==2181462== HEAP SUMMARY:
-==2181462==     in use at exit: 81,137 bytes in 5 blocks
-==2181462==   total heap usage: 8 allocs, 3 frees, 81,223 bytes allocated
-==2181462== 
-==2181462== LEAK SUMMARY:
-==2181462==    definitely lost: 0 bytes in 0 blocks
-==2181462==    indirectly lost: 0 bytes in 0 blocks
-==2181462==      possibly lost: 144 bytes in 1 blocks
-==2181462==    still reachable: 80,993 bytes in 4 blocks
-==2181462==                       of which reachable via heuristic:
-==2181462==                         stdstring          : 66 bytes in 1 blocks
-==2181462==         suppressed: 0 bytes in 0 blocks
-==2181462== Rerun with --leak-check=full to see details of leaked memory
-==2181462== 
-==2181462== Use --track-origins=yes to see where uninitialised values come from
-==2181462== For lists of detected and suppressed errors, rerun with: -s
-==2181462== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==3046156== 
+==3046156== Process terminating with default action of signal 6 (SIGABRT)
+==3046156==    at 0x57C4AFF: raise (in /usr/lib64/libc-2.28.so)
+==3046156==    by 0x5797EA4: abort (in /usr/lib64/libc-2.28.so)
+==3046156==    by 0x4ED709A: ??? (in /usr/lib64/libstdc++.so.6.0.25)
+==3046156==    by 0x4EDD53B: ??? (in /usr/lib64/libstdc++.so.6.0.25)
+==3046156==    by 0x4EDD596: std::terminate() (in /usr/lib64/libstdc++.so.6.0.25)
+==3046156==    by 0x4EDD7F7: __cxa_throw (in /usr/lib64/libstdc++.so.6.0.25)
+==3046156==    by 0x4ED8FB2: ??? (in /usr/lib64/libstdc++.so.6.0.25)
+==3046156==    by 0x4F76F9C: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) (in /usr/lib64/libstdc++.so.6.0.25)
+==3046156==    by 0x427815: Node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::getKey() (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
+==3046156==    by 0x406251: GNode<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::operator==(Node<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&) const (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
+==3046156==    by 0x428569: test_node_constructor() (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
+==3046156==    by 0x42B95A: main (in /class/ece220/Spring2023/nightly/sp23_ece220_shubbp2/mp12/mp12_test)
+==3046156== 
+==3046156== HEAP SUMMARY:
+==3046156==     in use at exit: 81,137 bytes in 5 blocks
+==3046156==   total heap usage: 8 allocs, 3 frees, 81,223 bytes allocated
+==3046156== 
+==3046156== LEAK SUMMARY:
+==3046156==    definitely lost: 0 bytes in 0 blocks
+==3046156==    indirectly lost: 0 bytes in 0 blocks
+==3046156==      possibly lost: 144 bytes in 1 blocks
+==3046156==    still reachable: 80,993 bytes in 4 blocks
+==3046156==                       of which reachable via heuristic:
+==3046156==                         stdstring          : 66 bytes in 1 blocks
+==3046156==         suppressed: 0 bytes in 0 blocks
+==3046156== Rerun with --leak-check=full to see details of leaked memory
+==3046156== 
+==3046156== Use --track-origins=yes to see where uninitialised values come from
+==3046156== For lists of detected and suppressed errors, rerun with: -s
+==3046156== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
 
 Testing anagram with post order (19pts)
 
